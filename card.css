@@ -6,6 +6,13 @@ body {
     padding: 0;
 }
 
+.card .right .description{
+  height: 150px;
+  overflow: hidden;
+  text-overflow: clip;
+  
+}
+
 .container {
     display: inline;
     max-width: 100%;
@@ -36,27 +43,16 @@ body {
     padding: 10px;
 }
 
-.container .card .left .image {
-    width: 100px;
-    height: 100px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: whitesmoke;
-    margin: auto;
-}
-
-.container .card .right {
+/* .container .card .right {
     widows: 70%;
     padding: 10px;
-}
+} */
 
 .card .right .name {
     width: 100%;
     font-size: 18px;
     font-weight: bold;
     border-bottom: 1px solid lightgray;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
 }
 
   .container .card {
@@ -78,10 +74,36 @@ body {
   .container .card .over-card .tier {
     text-align: center;
     position: relative;
-    top: -88px;
+    top: 103px;
     color: gold;
     /* background-color: black; */
 
+  }
+
+  /* ::-webkit-scrollbar {
+    direction: rtl;
+    position: relative;
+    width: 10px;
+    opacity: 0;
+    left: 100px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    position: relative;
+    z-index: 100000000000000000000000000000000000000000000000;
+    order: 100000000000000000000000000000000000000000000000000000;
+    background-color: black;
+    width: 50px;
+    height: 50px;
+  } */
+
+  .over-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
   }
 
   .container .card .over-card .quantity {
@@ -98,3 +120,60 @@ body {
     left: 0px;
     background-color: black;
   }
+
+  .fSelector{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    object-fit: cover;
+    z-index: 100000000000000;
+    
+  }
+
+  .fSelected {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -100;
+  }
+
+  .fSelected label {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* Ensure the checkbox is centered */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    /* display: block;
+    position: absolute;
+    width: 100;
+    height: 100;
+    object-fit: fill;
+    z-index: 99999999999; */
+  }
+
+  .fSelector:checked ~ .fSelected {
+    opacity: .5;
+    background: black;
+    box-shadow: 0 0 11px rgba(255, 0, 221, 0.9);
+    z-index: 9999999;
+  }
+
+  /* .fSelector:not(:checked) ~ .fSelected {
+    opacity: 0;
+    background: black;
+    left: -4px;
+    top: -3px;
+    box-shadow: 0 0 11px rgba(255, 0, 221, 0.9);
+    z-index: 9999999999999;
+  } */

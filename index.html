@@ -29,14 +29,21 @@
   </script>
 
   <script src="dependencies/jquery.js"></script>
-  <script type="module" src="auth.js" ></script>
-  <script src="dependencies/faker.js"></script>
 
-  <script src="utils.js"></script>
-<script type="module" src="textReplace.js"></script>
+  <!-- <script src="dependencies/faker.js"></script> -->
+
+  
+
 
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="card.css">
+<link rel="stylesheet" href="tools.css">
+<link rel="stylesheet" href="audio.css">
+<link rel="stylesheet" href="notifications.css">
+<link rel="stylesheet" href="experience.css">
+<link rel="stylesheet" href="crowns.css">
+
+<div class="crowns">👑 0</div>
 
 <div class="forms-out">
   <div class="forms-in">
@@ -74,10 +81,27 @@
   </div>
 </div>
 
-<div class="stats">
-  <span class="level"></span></br>
-  <span class="experience"></span>
+<div id="notification-area">
 </div>
+
+<div class="currentLevel">
+  <p class="currentLevel">1</p>
+</div>
+
+<div class="experience">
+  <span class="experience-bar" style="width: 75%"></span>
+</div>
+
+<button onclick="musicButton();">Play/Pause</button>
+
+<button onclick="saveToDatabase();">Save To Database</button>
+<button onclick="loadFromDatabase();">Load From Database</button>
+
+<a onclick="toggleTools()" class="edit">✎</a>
+<a onclick="deleteSelectedCardsButton();" class="tool">🗑</a>
+<a onclick="fuseSelectedCards();" class="tool">🌀</a>
+
+<br>
 
 <div class="container">
 
@@ -90,6 +114,11 @@
     <div class="right">
         <div class="name" data-each="name">
             Card Name
+        </div>
+        <div class="fSelector">
+          <input class="fSelector" type="checkbox" id="fSelector" name="" value="true">
+          <div class="fSelected"></div>
+          <label class="fLabel" for="fSelector"></label>
         </div>
         <div class="description" data-each="description">
             Card Description
@@ -105,6 +134,7 @@
     <div class="quantity" data-each="quantity">
       Card Quantity
   </div>
+
 </div>
 
     </div>
@@ -112,3 +142,12 @@
 </div>
 
 </div>
+
+<div class="pageNavigation">
+  <button onclick="previousPage();">Previous Page</button>
+  <button onclick="nextPage();">Next Page</button>
+</div>
+
+<script src="auth.js" ></script>
+<script src="devtools.js"></script>
+<script src="audio.js"></script>
