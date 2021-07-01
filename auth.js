@@ -1895,6 +1895,28 @@ async function deleteCard(cardID) {
 
 // }
 
+async function getTierOfCard(cardID) {
+
+    var toPickFrom = [];
+
+    var randomNumber = random(cardID);
+
+    var tierWeights = ["1", "10", "20", "40", "80", "160", "320", "640", "1280", "2560"];
+
+
+    tierWeights = tierWeights.reverse();
+
+    for (k in tierWeights) {
+        for (j = 0; j < tierWeights[k]; j++) {
+            toPickFrom.push((parseInt(k)+1).toString());
+        }
+    }
+
+    console.log(toPickFrom);
+    tier = toPickFrom[Math.floor(randomNumber * toPickFrom.length)];
+    return tier;
+}
+
 
 async function addCard(cardID, quantity) {
     parseInt(quantity);
@@ -2043,6 +2065,14 @@ async function fuseSelectedCards() {
         //await firebase.database().ref('users/' + userUid + '/cards/').update(toUpdate[card[0]]);
         //@@
         getRandomCardResult = await getRandomCard();
+
+        tierOfRandomCard = await getTierOfCard(getRandomCardResult);
+
+        while (tierOfRandomCard != (tierToFuse + 1)) {
+            getRandomCardResult = await getRandomCard();
+            tierOfRandomCard = await getTierOfCard(getRandomCardResult);
+        }
+
         await addCard(getRandomCardResult, 1);
         loadCards();
         var XPReward = Math.round(Math.random() * maxXPReward);
