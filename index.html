@@ -42,9 +42,22 @@
 <link rel="stylesheet" href="notifications.css">
 <link rel="stylesheet" href="experience.css">
 <link rel="stylesheet" href="crowns.css">
+<link rel="stylesheet" href="pages.css">
 
 <div class="crowns">👑 0</div>
 
+<br>
+<br>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Sign-in')" id="defaultOpen">Sign-in</button>
+  <button class="tablinks" onclick="openCity(event, 'Cards')" id="cardsOpen">Cards</button>
+  <button class="tablinks" onclick="openCity(event, 'Games')">Games</button>
+  <button class="tablinks" onclick="openCity(event, 'Save/Load')">Save/Load</button>
+  <button class="tablinks" onclick="openCity(event, 'Music')">Music</button>
+</div>
+
+<div id="Sign-in" class="tabcontent">
 <div class="forms-out">
   <div class="forms-in">
     <div id="registration-page" class="hide">
@@ -80,6 +93,7 @@
     </div>
   </div>
 </div>
+</div>
 
 <div id="notification-area">
 </div>
@@ -92,14 +106,38 @@
   <span class="experience-bar" style="width: 75%"></span>
 </div>
 
+<div id="Music" class="tabcontent">
+  <br>
+  <br>
+  <br>
 <button onclick="musicButton();">Play/Pause</button>
+</div>
 
+<div id="Save/Load" class="tabcontent">
+  <br>
+  <br>
+  <br>
 <button onclick="saveToDatabase();">Save To Database</button>
 <button onclick="loadFromDatabase();">Load From Database</button>
+</div>
 
-<a onclick="toggleTools()" class="edit">✎</a>
-<a onclick="deleteSelectedCardsButton();" class="tool">🗑</a>
-<a onclick="fuseSelectedCards();" class="tool">🌀</a>
+<div id="Games" class="tabcontent">
+  <br>
+  <br>
+  <br>
+<a href="/kapta/games/helicopter/helicopter.html">Helicopter Game</a>
+</div>
+
+<br>
+<div id="Cards" class="tabcontent">
+
+  <br>
+  <br>
+  <br>
+
+<button onclick="toggleTools()" class="edit">Edit</button>
+<button onclick="deleteSelectedCardsButton();" class="tool">Delete</button>
+<button onclick="fuseSelectedCards();" class="tool">Fuse</button>
 
 <br>
 
@@ -142,10 +180,16 @@
 </div>
 
 </div>
+<br>
+<br>
+<br>
+<br>
 
 <div class="pageNavigation">
-  <button onclick="previousPage();">Previous Page</button>
-  <button onclick="nextPage();">Next Page</button>
+  <button onclick="previousPage();">🠸</button>
+  <button onclick="nextPage();">🠺</button>
+</div>
+
 </div>
 
 <script src="auth.js" ></script>

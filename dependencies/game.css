@@ -1,0 +1,87 @@
+.crowns {
+    z-index: 1000000000000000000;
+    position: fixed;
+    right: 50px;
+}
+
+.experience {
+    width: 100%;
+    max-width: 260px;
+    height: 6px;
+    background: #e1e4e8;
+    border-radius: 3px;
+    overflow: hidden;
+    position: fixed;
+    margin: 1% auto;
+    bottom: 0px;
+    right: 50px;
+    z-index: 1000000000;
+  }
+    
+    .experience-bar {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg,#ffd33d,#ea4aaa 17%,#b34bff 34%,#01feff 51%,#ffd33d 68%,#ea4aaa 85%,#b34bff);
+      background-size: 300% 100%;
+      animation: experience-animation 2s linear infinite;
+    }
+  
+  .currentLevel {
+    z-index: 1000000000000000;
+    display: inline-block;
+    position: fixed;
+    bottom: 10px;
+    margin: 1% auto;
+    right: 175px;
+  }
+  
+  @keyframes experience-animation {
+    0% {
+      background-position: 100%;
+    }
+  
+    100% {
+      background-position: 0;
+    }
+  }
+
+  #notification-area {
+    position:fixed;
+    top:0px;
+    right:10px;
+    width:250px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    z-index: 100000000000000000000000000000000000000000000000000;
+  }
+  #notification-area .notification {
+    position:relative;
+    padding:15px 10px;
+    background:#111;
+    color:#f5f5f5;
+    font-family:"Raleway";
+    font-size:14px;
+    font-weight:600;
+    border-radius:5px;
+    margin:5px 0px;
+    opacity:0;
+    left:20px;
+    animation:showNotification 500ms ease-in-out forwards;
+  }
+  @keyframes showNotification {
+    to {
+      opacity:1;
+      left:0px;
+    }
+  }
+  #notification-area .notification.success {
+    background:#389838;
+  }
+  #notification-area .notification.error {
+    background:orangered;
+  }
+  #notification-area .notification.info {
+    background:#00acee;
+  }

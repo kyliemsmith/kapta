@@ -1,0 +1,13 @@
+.pageNavigation {
+    z-index: 100000000000000000;
+    display: inline-flex;
+    position: absolute;
+    bottom: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    left: 50%;
+    right: 50%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}

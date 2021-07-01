@@ -1,4 +1,4 @@
-.edit {
+/* .edit {
 	background-color:#168ab8;
 	border-radius:28px;
 	border:1px solid #4ec3f5;
@@ -9,7 +9,6 @@
 	font-size:28px;
 	padding:8px 19px;
 	text-decoration:none;
-	/* text-shadow:0px 1px 0px #2f6627; */
 }
 .edit:hover {
 	background-color:#4ec3f5;
@@ -30,34 +29,11 @@
 	font-size:28px;
 	padding:8px 19px;
 	text-decoration:none;
-	/* text-shadow:0px 1px 0px #2f6627; */
 }
 .tool:hover {
 	background-color:#4ec3f5;
 }
 .tool:active {
-	position:relative;
-	top:1px;
-}
-
-
-/* .edit {
-	background-color:#44c767;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:28px;
-	padding:8px 19px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
-}
-.edit:hover {
-	background-color:#5cbf2a;
-}
-.edit:active {
 	position:relative;
 	top:1px;
 } */
