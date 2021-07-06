@@ -1337,18 +1337,24 @@ firebase.auth().onAuthStateChanged(user => {
     //console.log("User UID" + user.uid);
     console.log("Loading...");
     document.getElementById("cardsOpen").click();
-    if (getCookie("cards") != "") {
-        loadCards("local");
-        loadLevels("local");
-        loadCrowns("local");
+    if (getCookie("uid") != user.uid) {
+        wipeLocalData();
+        loadFromDatabase();
+        setCookie("uid", user.uid, 7);
     } else {
-        notify("error", "Couldn't find data in local storage; loading from database.")
-        loadCards("database");
-        loadLevels("database");
-        loadCrowns("database");
-    }
+        if (getCookie("cards") != "" && getCookie("level") != "" && getCookie("experience") != "" && getCookie("crowns") != "") {
+            loadCards("local");
+            loadLevels("local");
+            loadCrowns("local");
+        } else {
+            notify("error", "Couldn't find data in local storage; loading from database.")
+            loadCards("database");
+            loadLevels("database");
+            loadCrowns("database");
+        }
     
     }
+}
 });
 
 async function loadFromDatabase() {
@@ -2248,7 +2254,7 @@ function addXP(xpToAdd) {
     
 }
 
-//Saving to Database
+//Saving to Database and Wiping Local Data
 
 async function saveToDatabase() {
 
@@ -2265,6 +2271,13 @@ async function saveToDatabase() {
     }
 }
 
+async function wipeLocalData() {
+    setCookie("cards", "", 7);
+    setCookie("experience", "", 7);
+    setCookie("level", "", 7);
+    setCookie("crowns", "", 7);
+}
+
 //Crowns
 
 var crowns;
@@ -2277,6 +2290,7 @@ async function loadCrowns(loadFrom) {
         await firebase.database().ref('users/' + userUid).once("value", snap => {
             console.log(snap.val());
             crowns = parseInt(snap.val()["crowns"]);
+            setCookie("crowns", crowns, 7);
         });
     } else {
         crowns = parseInt(getCookie("crowns"));
