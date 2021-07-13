@@ -4,7 +4,7 @@
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
   
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+  <!-- Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
@@ -29,6 +29,7 @@
   </script>
 
   <script src="dependencies/jquery.js"></script>
+  <script src="dependencies/p5.js"></script>
 
   <!-- <script src="dependencies/faker.js"></script> -->
 
@@ -38,7 +39,6 @@
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="card.css">
 <link rel="stylesheet" href="tools.css">
-<link rel="stylesheet" href="audio.css">
 <link rel="stylesheet" href="notifications.css">
 <link rel="stylesheet" href="experience.css">
 <link rel="stylesheet" href="crowns.css">
@@ -113,6 +113,13 @@
   <br>
   <br>
 <button onclick="musicButton();">Play/Pause</button>
+<button onclick="musicLoopButton();">Loop?</button>
+<br>
+<br>
+<h3>Song Select: </h3>
+<select class="musicList" selected="None" onchange="musicDropdownMenuChanged(getChangedItemFromDropdownMenu(this))">
+  <option value="None">None</option>
+</select>
 </div>
 
 <div id="Save/Load" class="tabcontent">
@@ -127,7 +134,14 @@
   <br>
   <br>
   <br>
-<a href="/kapta/games/helicopter/helicopter.html">Helicopter Game</a>
+  <!-- <a href="/kapta/games/helicopter/helicopter.html">Helicopter Game</a> -->
+  <select class="gameList" selected="None" onchange="showGame(getChangedItemFromDropdownMenu(this))">
+    <option value="None">None</option>
+    <option value="helicopter">Helicopter</option>
+    <option value="snake">Snake</option>
+  </select>
+  <div class="game">
+  </div>
 </div>
 
 <div id="Shop" class="tabcontent">

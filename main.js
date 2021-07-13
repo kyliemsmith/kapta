@@ -1446,7 +1446,7 @@ function capitalize(string) {
 }
 
 
-function random(seed) {
+function randomFromSeed(seed) {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
@@ -1462,7 +1462,7 @@ function loadCardData(cardID, quantity) {
     var toPickFrom = [];
     cardID = parseInt(cardID);
 
-    var randomNumber = random(cardID);
+    var randomNumber = randomFromSeed(cardID);
 
     var description = "";
 
@@ -1489,7 +1489,7 @@ function loadCardData(cardID, quantity) {
     for (let i = 0; i < length; i++) {
       var randomNum = Math.floor(randomNumberPlaceholder * characters.length);
       name += characters[randomNum];
-      randomNumberPlaceholder = random(randomNumberPlaceholder);
+      randomNumberPlaceholder = randomFromSeed(randomNumberPlaceholder);
       
     }
     name = capitalize(name);
@@ -1905,7 +1905,7 @@ async function getTierOfCard(cardID) {
 
     var toPickFrom = [];
 
-    var randomNumber = random(cardID);
+    var randomNumber = randomFromSeed(cardID);
 
     var tierWeights = ["1", "10", "20", "40", "80", "160", "320", "640", "1280", "2560"];
 
@@ -2349,6 +2349,9 @@ async function buyRandomCard() {
 document.getElementById("defaultOpen").click();
 
 function openTab(evt, tabName) {
+    //Clear game(s)
+    hideGame();
+
     // Declare all variables
     var i, tabcontent, tablinks;
   
@@ -2502,18 +2505,91 @@ function displayConfetti(seconds) {
 
 //Audio
 
-var audio = new Audio("http://soundimage.org/wp-content/uploads/2017/05/Puzzle-Dreams-2.mp3");
+numOfSongs = 7;
+musicFileExtension = ".mp3";
+musicPathBase = "music/";
 
-    audio.addEventListener('ended', function() {
-        this.currentTime = 1;
-        this.play();
-    }, false);
 
+console.log(`Music Params: ${numOfSongs}, ${musicPathBase}, ${musicFileExtension}`);
+
+var music = new Audio(musicPathBase + (Math.ceil(Math.random() * (numOfSongs - 1))).toString() + musicFileExtension);
+
+populateDropdownMenu();
+
+music.addEventListener('ended', musicEnded);
+
+function musicEnded() {
+    console.log(`Music Params: ${numOfSongs}, ${musicPathBase}, ${musicFileExtension}`);
+    music = new Audio(musicPathBase + (Math.ceil(Math.random() * (numOfSongs - 1))).toString() + musicFileExtension);
+
+    console.log("Set music, now playing!");
+    music.play();
+}
+
+
+function setMusic(musicID) {
+    music.pause();
+    if (parseInt(musicID) > numOfSongs) {
+        console.log("musicID is greater than numOfSongs, setting to random song.");
+        musicEnded();
+    } else {
+        music = new Audio(musicPathBase + musicID.toString() + musicFileExtension);
+        music.play();
+    }
+    
+}
 
 function musicButton() {
-  if (audio.paused) {
-    audio.play();
+  if (music.paused) {
+    music.play();
   } else {
-    audio.pause();
+    music.pause();
   }
+}
+
+function musicLoopButton() {
+    if (music.loop == false) {
+      music.loop = true;
+    } else {
+      music.loop = false;
+    }
+  }
+
+function populateDropdownMenu() {
+    for (var musicID = 0; musicID < numOfSongs; musicID++) {
+        $(".musicList").append($('<option></option>').val(musicID.toString()).html(musicID));
+    }
+}
+
+function musicDropdownMenuChanged(musicThatChanged) {
+    if (musicThatChanged != "None") {
+        setMusic(musicThatChanged);
+    } else {
+        music.pause();
+        // console.log("None was selected therefore not doing anything.");
+    }
+}
+
+function getChangedItemFromDropdownMenu(sel) {
+    return sel.options[sel.selectedIndex].value;
+}
+
+function showGame(gameName) {
+    if (gameName != "None") {
+        $(".game").append($(`<script src="games/${gameName}.js" class="gameScript"></script>`));
+        reloadP5JS();
+    } else {
+        hideGame();
+        // console.log("None was selected therefore not doing anything.");
+    }
+}
+
+function reloadP5JS() {
+    p5.disableFriendlyErrors = true;
+    new p5();
+}
+
+function hideGame() {
+    $(".gameScript").remove();
+    $(".p5Canvas").remove();
 }
