@@ -1,6 +1,7 @@
 .crowns {
     z-index: 1000000000000000000;
     position: fixed;
-    top: 0px;
+    /* top: 0px; */
     left: 0px;
+    margin-top: 10px;
 }

@@ -44,20 +44,33 @@
 <link rel="stylesheet" href="crowns.css">
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="confetti.css">
-
-<div class="crowns">👑 0</div>
+<link rel="stylesheet" href="navbar.css">
 
 <br>
 <br>
 
-<div class="tab">
+<!-- <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'Sign-in')" id="defaultOpen">Sign-in</button>
   <button class="tablinks" onclick="openTab(event, 'Cards')" id="cardsOpen">Cards</button>
   <button class="tablinks" onclick="openTab(event, 'Games')">Games</button>
   <button class="tablinks" onclick="openTab(event, 'Shop')">Shop</button>
   <button class="tablinks" onclick="openTab(event, 'Save/Load')">Save/Load</button>
   <button class="tablinks" onclick="openTab(event, 'Music')">Music</button>
-</div>
+</div> -->
+
+<nav id='menu'>
+  <input type='checkbox' id='responsive-menu' onclick='updateMenu()'><label></label>
+  <ul>
+    <li><a class="tablinks" onclick="openTab(event, 'Sign-in')" id="defaultOpen">Sign-In</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Cards')" id="cardsOpen">Cards</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Games')">Games</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Shop')">Shop</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Save/Load')">Save/Load</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Music')">Music</a></li>
+  </ul>
+</nav>
+
+<div class="crowns">👑 0</div>
 
 <div id="Sign-in" class="tabcontent">
 <div class="forms-out">
