@@ -58,7 +58,7 @@ var crashCheck = function() {
                 givenRewards = true;
                 addCrowns(Math.floor(score/2));
                 addXP(Math.floor(score/3));
-                notify("info", `You gained ${Math.floor(score/3)} Crowns and ${Math.floor(score/5)} XP!`);
+                notify("info", `You gained ${Math.floor(score/2)} Crowns and ${Math.floor(score/3)} XP!`);
             }
         }
     }

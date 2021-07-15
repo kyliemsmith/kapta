@@ -2576,6 +2576,7 @@ function getChangedItemFromDropdownMenu(sel) {
 
 function showGame(gameName) {
     if (gameName != "None") {
+        hideGame();
         $(".game").append($(`<script src="games/${gameName}.js" class="gameScript"></script>`));
         reloadP5JS();
     } else {

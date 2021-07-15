@@ -1,7 +1,12 @@
-#menu {
+nav#menu {
+    top: 0px;
     position: fixed;
+}
+
+#menu {
     width: 100%;
     top: 0px;
+    position: fixed;
 	background: #0099CC;
 	color: #FFF;
 	height: 45px;
@@ -94,4 +99,8 @@
 	#menu input:checked + label {color:white}
 	#menu input:checked + label:before {content:"\00d7"}
 	#menu input:checked ~ ul {display:block}
+}
+
+.tablinks {
+    z-index: 99999999999999999999999999999;
 }
