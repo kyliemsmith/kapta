@@ -2352,6 +2352,9 @@ function openTab(evt, tabName) {
     //Clear game(s)
     hideGame();
 
+    //Set gameList selected to 'None'
+    $(".gameList").val("None");
+
     // Declare all variables
     var i, tabcontent, tablinks;
   
