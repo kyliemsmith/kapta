@@ -2056,7 +2056,7 @@ async function fuseSelectedCards() {
             cardsInFuse = selectedCardsWithTiers.slice((tf*cardsPerFuse), ((tf*cardsPerFuse)) + cardsPerFuse);
             console.log(cardsInFuse);
         }
-//Reminder: Update this part once you finish implementing the local and non-local data storage.
+
         for (var card of cardsInFuse) {
             console.log("card:");
             console.log(card);
