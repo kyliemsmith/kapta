@@ -1451,11 +1451,10 @@ function randomFromSeed(seed) {
     return x - Math.floor(x);
 }
 
-
 function loadCardData(cardID, quantity) {
     var tierWeights = ["1", "10", "20", "40", "80", "160", "320", "640", "1280", "2560"];
     //var maxTier = tierWeights.length;
-    var elements = ["fire", "water", "earth", "air"];
+    var elements = ["fire", "water", "ice", "earth", "wind", "thunder", "light", "darkness"];
     var temperaments = ["passive", "neutral", "aggressive"];
     var tierDescriptions = ["very weak", "slightly weak", "weak", "average", "slightly above average", "above average", "strong", "very strong", "extremely strong", "godlike"];
     var description = "";
@@ -1700,8 +1699,12 @@ var cardTemplate = null;
 var types = {
     "fire": "🔥",
     "water": "💧",
+    "ice": "🧊",
     "earth": "🌲",
-    "air" : "💨"
+    "wind": "💨",
+    "thunder": "⚡",
+    "light": "💡",
+    "darkness": "⬛"
   };
 
 (function ($) {

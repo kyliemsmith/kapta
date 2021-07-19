@@ -49,10 +49,17 @@ body {
 } */
 
 .card .right .name {
+    position: relative;
+    top: 20px;
     width: 100%;
     font-size: 18px;
     font-weight: bold;
     border-bottom: 1px solid lightgray;
+}
+
+.card .right .description {
+  position: relative;
+  top: 20px;
 }
 
   .container .card {
@@ -74,7 +81,7 @@ body {
   .container .card .over-card .tier {
     text-align: center;
     position: relative;
-    top: 103px;
+    top: 20px;
     color: gold;
     /* background-color: black; */
 
@@ -118,7 +125,7 @@ body {
     position: absolute;
     top: 0px;
     left: 0px;
-    background-color: black;
+    /* background-color: black; */
   }
 
   .fSelector{

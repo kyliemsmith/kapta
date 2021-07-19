@@ -67,6 +67,7 @@
     <li><a class="tablinks" onclick="openTab(event, 'Shop')">Shop</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Save/Load')">Save/Load</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Music')">Music</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Help')">Help</a></li>
   </ul>
 </nav>
 
@@ -164,6 +165,173 @@
   <br>
   <br>
   <button onclick="buyRandomCard();">Buy Random Card</button>
+</div>
+
+<div id="Help" class="tabcontent">
+  <h1 id="home">Home</h1>
+  <p>Welcome to the Kapta wiki!</p>
+  <ul>
+  <li><a href="#home">Home</a></li>
+  <li><a href="#getting-started">Getting Started</a><ul>
+  <li><a href="#how-to-play">How to Play</a></li>
+  <li><a href="#about-kapta">About Kapta</a></li>
+  <li><a href="#rules">Rules</a></li>
+  </ul>
+  </li>
+  <li><a href="#cards">Cards</a><ul>
+  <li><a href="#card-attributes">Card Attributes</a><ul>
+  <li><a href="#elements">Elements</a></li>
+  <li><a href="#tiers">Tiers</a></li>
+  </ul>
+  </li>
+  <li><a href="#card-uses">Card Uses</a><ul>
+  <li><a href="#fusion">Fusion</a></li>
+  <li><a href="#battle">Battle</a></li>
+  </ul>
+  </li>
+  </ul>
+  </li>
+  </ul>
+  <p><br></p>
+  <h1 id="getting-started">Getting Started</h1>
+  <h2 id="how-to-play">How to Play</h2>
+  <p>You can play Kapta at firerubies.github.io/kapta!</p>
+  <p><br></p>
+  <h2 id="about-kapta">About Kapta</h2>
+  <p>Kapta is a game where you collect cards. You can use these cards for many things including <a href="#fusion">Fusion</a>, and <a href="#battle">Battle</a>.</p>
+  <p><br></p>
+  <h2 id="rules">Rules</h2>
+  <ol>
+  <li>Don&#39;t mess with my API keys.</li>
+  <li>Don&#39;t cheat.</li>
+  <li>Have fun!</li>
+  </ol>
+  <p><br></p>
+  <h1 id="cards">Cards</h1>
+  <p>Cards are the main mechanic of Kapta.</p>
+  <p><br></p>
+  <h2 id="card-attributes">Card Attributes</h2>
+  <p>All cards in Kapta have attributes like it&#39;s element, tier, etc.</p>
+  <p><br></p>
+  <h3 id="elements">Elements</h3>
+  <p>Every card has an element. A card&#39;s element is essential in battle as certain elements are weaker or mrore resistant to other elements.</p>
+  <blockquote>
+  <p>When you get home look up a chart or something about
+  which of the four basic elements are weak or strong
+  to which element then finish / redo the below table
+  or just include the image you found.</p>
+  </blockquote>
+  <table>
+  <thead>
+  <tr>
+  <th>Element</th>
+  <th>Anti-Element</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>Fire</td>
+  <td>Water</td>
+  </tr>
+  <tr>
+  <td>Ice</td>
+  <td>Fire</td>
+  </tr>
+  <tr>
+  <td>Thunder</td>
+  <td>Earth</td>
+  </tr>
+  <tr>
+  <td>Light</td>
+  <td>Darkness</td>
+  </tr>
+  <tr>
+  <td>Wind</td>
+  <td>Ice</td>
+  </tr>
+  <tr>
+  <td>Water</td>
+  <td>Thunder</td>
+  </tr>
+  <tr>
+  <td>Earth</td>
+  <td>Wind</td>
+  </tr>
+  <tr>
+  <td>Darkness</td>
+  <td>Light</td>
+  </tr>
+  </tbody>
+  </table>
+  <p><br></p>
+  <h3 id="tiers">Tiers</h3>
+  <p>Tiers are used to quantify the power of a card. The higher the tier of a card is the more powerful it is. The max tier a card can be currently is 10.</p>
+  <!-- Ask in a discord server about the below math. It seems wrong. -->
+  <blockquote>
+  <p>Fun fact:
+  It takes 19 million tier 1 cards to make a tier 10 card. Good luck!</p>
+  </blockquote>
+  <h2 id="card-uses">Card Uses</h2>
+  <p>Below are some of the things you can do with cards.</p>
+  <p><br></p>
+  <h3 id="fusion">Fusion</h3>
+  <p><br></p>
+  <p>You can fuse cards of the same tier together to make a one card with a higher tier.</p>
+  <table>
+  <thead>
+  <tr>
+  <th>Tier</th>
+  <th>Cards Required (Of That Tier)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>1</td>
+  <td>N/A</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>3</td>
+  </tr>
+  <tr>
+  <td>3</td>
+  <td>4</td>
+  </tr>
+  <tr>
+  <td>4</td>
+  <td>5</td>
+  </tr>
+  <tr>
+  <td>5</td>
+  <td>6</td>
+  </tr>
+  <tr>
+  <td>6</td>
+  <td>7</td>
+  </tr>
+  <tr>
+  <td>7</td>
+  <td>8</td>
+  </tr>
+  <tr>
+  <td>8</td>
+  <td>9</td>
+  </tr>
+  <tr>
+  <td>9</td>
+  <td>10</td>
+  </tr>
+  <tr>
+  <td>10</td>
+  <td>11</td>
+  </tr>
+  </tbody>
+  </table>
+  <p><br></p>
+  <h3 id="battle">Battle</h3>
+  <blockquote>
+  <p>Battle isn&#39;t implemented yet but will be in the near future.</p>
+  </blockquote>  
 </div>
 
 <br>
