@@ -247,6 +247,7 @@ firebase.auth().onAuthStateChanged(user => {
             loadCards("local");
             loadLevels("local");
             loadCrowns("local");
+            loadTeam();
         } else {
             notify("error", "Couldn't find data in local storage; loading from database.")
             loadCards("database");
@@ -352,7 +353,7 @@ function randomFromSeed(seed) {
     return x - Math.floor(x);
 }
 
-function loadCardData(cardID, quantity) {
+function loadCardData(cardID, quantity, getOnly) {
     var tierWeights = ["1", "10", "20", "40", "80", "160", "320", "640", "1280", "2560"];
     //var maxTier = tierWeights.length;
     var elements = ["fire", "water", "ice", "earth", "wind", "thunder", "light", "darkness"];
@@ -430,8 +431,20 @@ function loadCardData(cardID, quantity) {
     console.log(description);
 
     //Return Card Data
-
-    return [name, description, quantity, tier, element]
+    if (getOnly == undefined) {
+        return [name, description, quantity, tier, element]
+    } else if (getOnly == "name") {
+        return name.split(" -")[0];
+    } else if (getOnly == "description") {
+        return description;
+    } else if (getOnly == "tier") {
+        return tier
+    } else if (getOnly == "element") {
+        return element;
+    } else {
+        return [name, description, quantity, tier, element];
+    }
+    
 }
 
 async function loadCards(loadFrom) {
@@ -608,6 +621,8 @@ var types = {
     "darkness": "⬛"
   };
 
+var tierSymbol = "★";
+
 (function ($) {
 
     forData = function (index, data) {
@@ -656,7 +671,6 @@ var types = {
                         console.log("APPENDING BELOW VALUE TO CHILD:");
                         console.log(obj[key]);
                         if (key == "tier") {
-                            tierSymbol = "★"; 
                             console.log(tierSymbol.repeat([parseInt(obj[key])]));
                             child.append(tierSymbol.repeat([parseInt(obj[key])]));
                             console.log("Now displaying tier!");
@@ -693,33 +707,46 @@ var types = {
     }
 })(jQuery);
 
-function nextPage() {
+async function nextPage() {
     if ($(".card").length >= cardsPerPage && (((JSON.parse(getCookie("cards")).length / cardsPerPage) % 1) > 0)) {
         pageNumber += 1;
         console.log("Next page!");
-        loadCards();
+        if (editingTeam) {
+            await checkCardsInTeam();
+            await loadCards();
+            await showCardsInTeamOnPage();
+        } else {
+            loadCards();
+        }
     } else {
         notify("error", "Page doesn't exist!");
         console.log("Page doesn't exist!");
     }
 };
 
-function previousPage() {
+async function previousPage() {
     if ((pageNumber - 1) > 0) {
         pageNumber -=1;
         console.log("Previous page!");
-        loadCards();
+        if (editingTeam) {
+            await checkCardsInTeam();
+            await loadCards();
+            await showCardsInTeamOnPage();
+        } else {
+            loadCards();
+        }
     } else {
         notify("error", "Page doesn't exist!");
         console.log("Page doesn't exist!");
     }
 };
 
-function goToPage(pageNum) {
-    pageNumber = pageNum;
-    console.log(`Going to page: ${pageNum}`);
-    loadCards();
-}
+// function goToPage(pageNum) {
+//     //TODO: Make this work when editing teams.
+//     pageNumber = pageNum;
+//     console.log(`Going to page: ${pageNum}`);
+//     loadCards();
+// }
 
 //Card Operations
 
@@ -738,6 +765,10 @@ toggleTools = function() {
 }
 
 async function deleteSelectedCardsButton() {
+    if (editingTeam) {
+        notify("error", "You can't delete cards while editing your team!");
+        return;
+    }
     await deleteSelectedCards();
     await loadCards();
 }
@@ -910,6 +941,10 @@ function filterCardsForFusionByTier(cards, tier) {
 var minXPReward = 1;
 var maxXPReward = 10;
 async function fuseSelectedCards() {
+    if (editingTeam) {
+        notify("error", "You can't fuse cards while editing your team!");
+        return;
+    }
     var selectedCardsWithTiers = [];
     if (selectedCardsWithTiers.length == 0) {
         selectedCardsWithTiers = getCheckboxes();
@@ -1513,3 +1548,364 @@ function updateMenu() {
     }
   }
   
+//Battle
+
+var baseHealth = 20;
+var healthPerTier = 10;
+
+var baseDamage = 5;
+var damagePerTier = 10;
+var maxRandomDamage = 10;
+
+var playerHealth, enemyHealth, playerTier, enemyTier, playerHealthMax, enemyHealthMax = NaN;
+
+var playerElement, enemyElement = "";
+
+var maxTeamMembers = 3;
+
+var team = [];
+
+var teamPointer = [];
+
+var currentTurn = "player";
+
+var attackIntervalID = 0;
+
+var alreadyBattling = false;
+
+var elementDamageMultiplier = 1.25;
+
+// Element:Anti-Element
+var elementsDamage = {
+"fire":"water",
+"ice":"fire",
+"thunder":"earth",
+"light":"darkness",
+"wind":"ice",
+"water":"thunder",
+"earth":"wind",
+"darkness":"light",
+}
+
+async function startBattleButton() {
+    teamFiltered = team.filter(isRested);
+    teamPointer = team.filter(isRested);
+
+    if (teamFiltered.length > 0) {
+        startBattle(teamFiltered[0][0]);
+    } else {
+        notify("error", "You have no rested cards in your team!");
+    }
+}
+
+async function startBattle(playerCard) {
+    if (alreadyBattling) {
+        notify("error", "You are already in a battle!");
+        return;
+    }
+
+    alreadyBattling = true;
+    playerCard = parseInt(playerCard);
+    enemyCard = await getRandomCard();
+
+    team[team.indexOf(teamPointer[0])][1] = false;
+    await saveTeam();
+
+    while ((parseInt(loadCardData(enemyCard, -1, "tier")) - parseInt(loadCardData(playerCard, -1, "tier")) > -3) < -2) {
+        enemyCard = await getRandomCard();
+    }
+
+    playerTier = loadCardData(playerCard, -1, "tier");
+    enemyTier = loadCardData(enemyCard, -1, "tier");
+
+    playerElement = loadCardData(playerCard, -1, "element");
+    enemyElement = loadCardData(enemyCard, -1, "element");
+
+    playerHealthMax = await calculateHealth(playerTier);
+    enemyHealthMax = await calculateHealth(enemyTier);
+
+    playerHealth = playerHealthMax;
+    enemyHealth = enemyHealthMax;
+
+    await updateHealth();
+    await updateElements();
+    await updateTiers();
+    await toggleBattleElements();
+    attackIntervalID = setInterval(attack, 1500);
+
+    // setTimeout(attack(), 1500);
+
+}
+
+function isRested(toCheck) {
+    if (toCheck[1] == true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isNotRested(toCheck) {
+    if (toCheck[1] == false) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+async function changePlayerCard(toChangeTo) {
+    playerCard = parseInt(toChangeTo);
+    playerTier = loadCardData(playerCard, -1, "tier");
+    playerElement = loadCardData(playerCard, -1, "element");
+    playerHealthMax = await calculateHealth(playerTier);
+    playerHealth = playerHealthMax;
+    $('.healthBar#player').val(100*(playerHealth / playerHealthMax));
+    $(".playerElement").text(types[playerElement]);
+    $(".playerTier").text(tierSymbol.repeat(playerTier));
+}
+
+async function attack() {
+    if (currentTurn == "player") {
+        if (elementsDamage[enemyElement] == playerElement) {
+            enemyHealth = enemyHealth - (elementDamageMultiplier * (baseDamage + (playerTier * damagePerTier)) - Math.round(Math.random() * maxRandomDamage));
+        } else {
+            enemyHealth = enemyHealth - (baseDamage + (playerTier * damagePerTier)) - Math.round(Math.random() * maxRandomDamage);
+        }
+        currentTurn = "enemy";
+    } else {
+        if (elementsDamage[playerElement] == enemyElement) {
+            playerHealth = playerHealth - (elementDamageMultiplier * (baseDamage + (enemyTier * damagePerTier)) - Math.round(Math.random() * maxRandomDamage));
+        } else {
+            playerHealth = playerHealth - (baseDamage + (enemyTier * damagePerTier)) - Math.round(Math.random() * maxRandomDamage);
+        }
+        currentTurn = "player";
+    }
+
+    await updateHealth();
+
+    if (playerHealth <= 0) {
+        //player lost
+        console.log("Player lost!");
+        team[team.indexOf(teamPointer[0])][1] = false;
+        teamPointer[0][1] = false;
+        await saveTeam();
+        populateHealMenu();
+        teamPointer = team.filter(isRested);
+        if (teamPointer.length > 0) {
+            await changePlayerCard(teamPointer[0][0]);
+        } else {
+            await toggleBattleElements();
+            console.log("Player has no rested cards in their team!");
+            clearInterval(attackIntervalID);
+            alreadyBattling = false;
+        }
+        
+        // if(teamPointer.length > 0) {
+        //     await startBattle(teamPointer[0]);
+        // }
+    }
+
+    if (enemyHealth <= 0) {
+        //player won
+        await toggleBattleElements();
+        alreadyBattling = false;
+        clearInterval(attackIntervalID);
+        console.log("Player won!");
+        team[team.indexOf(teamPointer[0])][1] = false;
+        teamPointer[0][1] = false;
+        await saveTeam();
+        teamPointer = team.filter(isRested);
+        eTParsed = parseInt(enemyTier)
+        pTParsed = parseInt(playerTier)
+        //Change out enemy tier nad player tier below for eTparsed
+        // then make sure rewards for winning the battle work as expected
+        // and check to make sure your card edit system works when switching
+        // pages! :)
+        if (enemyTier > playerTier) {
+            addCrowns(2 * (eTParsed - pTParsed) + 3);
+            addXP(2 * (eTParsed - pTParsed) + 3);
+            notify("success", `You earned ${2 * (eTParsed - pTParsed) + 3} crowns and ${2 * (eTParsed - pTParsed) + 3} XP!`);
+        } else {
+            addCrowns(2 * (pTParsed - eTParsed) + 3);
+            addXP(2 * (pTParsed - eTParsed) + 3);
+            notify("success", `You earned ${2 * (pTParsed - eTParsed) + 3} crowns and ${2 * (pTParsed - eTParsed) + 3} XP!`);
+        }
+
+        populateHealMenu();
+    }
+
+}
+
+async function toggleBattleElements() {
+    if ($(".battleStats").css("visibility") == "visible") {
+        $(".battleStats").css("visibility", "hidden");
+    } else {
+        $(".battleStats").css("visibility", "visible");
+    }
+}
+
+async function calculateHealth(tier) {
+    tier = parseInt(tier);
+
+    return baseHealth + (tier * healthPerTier);
+}
+
+async function updateHealth() {
+    console.log(`Parameters: ${playerHealth, playerHealthMax}`);
+    console.log(`Setting player healthbar to: ${100*(playerHealth / playerHealthMax)}`);
+    console.log(`Setting enemy healthbar to: ${100*(enemyHealth / enemyHealthMax)}`);
+
+    $('.healthBar#player').val(100*(playerHealth / playerHealthMax));
+    $('.healthBar#enemy').val(100*(enemyHealth / enemyHealthMax));
+}
+
+async function updateElements() {
+    $(".playerElement").text(types[playerElement]);
+    $(".enemyElement").text(types[enemyElement]);
+}
+
+async function updateTiers() {
+    $(".playerTier").text(tierSymbol.repeat(playerTier));
+    $(".enemyTier").text(tierSymbol.repeat(enemyTier));
+}
+
+async function loadTeam() {
+    team = JSON.parse(getCookie("team"));
+    await populateHealMenu();
+}
+
+async function saveTeam() {
+    setCookie("team", JSON.stringify(team), 7);
+}
+
+var editingTeam = false;
+
+async function editTeamButton() {
+    if (editingTeam) {
+        $(".editTeam").css("color", "inherit");
+        doneEditingTeam();
+    } else if (!editingTeam) {
+        $(".editTeam").css("color", "green");
+        editTeam();
+    }
+}
+
+async function editTeam() {
+    editingTeam = true;
+    await unselectAllCards();
+    await showCardsInTeamOnPage();
+    await checkCardsInTeam();
+
+}
+
+async function doneEditingTeam() {
+    editingTeam = false;
+    await checkCardsInTeam();
+    await unselectAllCards();
+    await saveTeam();
+}
+
+
+
+async function showCardsInTeamOnPage() {
+    for (var i of team) {
+        $(".name").each(function() {
+            checkingCardID = $(this).text().split(" - ")[1];
+                if (checkingCardID == i[0]) {
+                    $(this).siblings(".fSelector").children("input.fSelector").prop("checked", true);
+                }
+        })
+    }
+}
+
+async function checkCardsInTeam() {
+    var checkingCardID = "";
+    var cardsInTeamOnThisPage = [];
+
+    for (var i of team) {
+        $(".name").each(function() {
+            checkingCardID = $(this).text().split(" - ")[1];
+                if (checkingCardID == i[0]) {
+                    cardsInTeamOnThisPage.push(checkingCardID);
+                }
+        })
+    }
+    console.log(`Cards in team on this page: ${cardsInTeamOnThisPage}`);
+    for (var j of $('input.fSelector')) {
+        checkingCardID = $(j).parent().siblings(".name").text().split(" - ")[1];
+        if ($(j).prop("checked")) {
+            console.log(checkingCardID);
+            console.log(typeof checkingCardID);
+            console.log(typeof cardsInTeamOnThisPage[0]);
+            console.log(cardsInTeamOnThisPage.includes(checkingCardID));
+            if (!cardsInTeamOnThisPage.includes(checkingCardID)) {
+                if ((team.length + 1) <= maxTeamMembers) {
+                    console.log(`Adding Card ${checkingCardID} to team!`);
+                    team.push([checkingCardID, false]);
+                } else {
+                    notify("error", `You can only have up to ${maxTeamMembers} cards in your team!`);
+                }
+
+            }
+        } else if ($(j).prop("checked") == false) {
+            if (cardsInTeamOnThisPage.includes(checkingCardID)) {
+                for (var l = 0; l < team.length; l++) {
+                    if (team[l][0] == checkingCardID) {
+                        console.log(`Removing Card ${checkingCardID}`);
+                        team.splice(l, 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+async function unselectAllCards() {
+    $("input.fSelector").prop("checked", false);
+}
+
+async function selectAllCards() {
+    $("input.fSelector").prop("checked", true);
+}
+
+var restCardPrice = 5;
+
+async function populateHealMenu() {
+    $('.restCardsList').find('option:not(:first)').remove();
+    for (var i of team.filter(isNotRested)) {
+        $(".restCardsList").append($('<option></option>').val(i[0]).html(loadCardData(i[0], -1, "name")));     
+    }
+}
+
+async function restCard(cardID, refresh) {
+    console.log(typeof cardID, " | ", cardID);
+    if (crowns - restCardPrice > 0) {
+        for (var i = 0; i < team.length; i++) {
+            console.log(team[i][0]);
+            if (team[i][0] == cardID) {
+                if (team[i][1] == false) {
+                    removeCrowns(restCardPrice);
+                    team[i][1] = true;
+                    notify("success", `Rested Card ${cardID} (${loadCardData(cardID, -1, "name")})`)
+                    if (refresh) {
+                        await populateHealMenu();
+                        await saveTeam();
+                    }
+                } else {
+                    notify("error", `Card ${cardID} is already rested!`);
+                }
+            }
+        }
+    } else {
+        notify("error", "You don't have enough crowns to rest this card!");
+    }
+
+};
+
+async function restAllCards() {
+    for (var i of team.filter(isNotRested)) {
+        restCard(i[0])
+    }
+    await populateHealMenu();
+    await saveTeam();
+};

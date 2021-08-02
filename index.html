@@ -45,6 +45,7 @@
 <link rel="stylesheet" href="pages.css">
 <link rel="stylesheet" href="confetti.css">
 <link rel="stylesheet" href="navbar.css">
+<link rel="stylesheet" href="battle.css">
 
 <br>
 <br>
@@ -64,6 +65,7 @@
     <li><a class="tablinks" onclick="openTab(event, 'Sign-in')" id="defaultOpen">Sign-In</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Cards')" id="cardsOpen">Cards</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Games')">Games</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Battle')">Battle</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Shop')">Shop</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Save/Load')">Save/Load</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Music')">Music</a></li>
@@ -144,6 +146,32 @@
 <button onclick="loadFromDatabase();">Load From Database</button>
 </div>
 
+<div id="Battle" class="tabcontent">
+  <br>
+  <br>
+  <br>
+  <div class="battleOptions">
+    <button class="startBattleButton" onclick="startBattleButton();">Start Battle!</button>
+    <select class="restCardsList" selected="None" onchange="restCard(getChangedItemFromDropdownMenu(this), true)">
+      <option value="None">None</option>
+    </select>
+    <button class="restAllCards" onclick="restAllCards();">Rest all cards</button>
+  </div>
+  <br>
+  <div class="battleStats">
+  <progress class="healthBar" id="player" value="100" max="100"></progress>
+  <progress class="healthBar" id="enemy" value="100" max="100"></progress>
+  <div class="battleTiers">
+    <div class="playerTier"></div>
+    <div class="enemyTier"></div>
+  </div>
+  <div class="battleElements">
+    <div class="playerElement"></div>
+    <div class="enemyElement"></div>
+  </div>
+</div>
+</div>
+
 <div id="Games" class="tabcontent">
   <br>
   <br>
@@ -172,55 +200,66 @@
   <p>Welcome to the Kapta wiki!</p>
   <ul>
   <li><a href="#home">Home</a></li>
-  <li><a href="#getting-started">Getting Started</a><ul>
+  <li><a href="#getting-started">Getting Started</a>
+  <ul>
   <li><a href="#how-to-play">How to Play</a></li>
   <li><a href="#about-kapta">About Kapta</a></li>
+  <li><a href="#report-a-bug">Report a bug</a></li>
   <li><a href="#rules">Rules</a></li>
   </ul>
   </li>
-  <li><a href="#cards">Cards</a><ul>
-  <li><a href="#card-attributes">Card Attributes</a><ul>
+  <li><a href="#cards">Cards</a>
+  <ul>
+  <li><a href="#crowns">Crowns</a></li>
+  <li><a href="#card-attributes">Card Attributes</a>
+  <ul>
   <li><a href="#elements">Elements</a></li>
   <li><a href="#tiers">Tiers</a></li>
   </ul>
   </li>
-  <li><a href="#card-uses">Card Uses</a><ul>
+  <li><a href="#card-uses">Card Uses</a>
+  <ul>
   <li><a href="#fusion">Fusion</a></li>
-  <li><a href="#battle">Battle</a></li>
+  <li><a href="#battle">Battle</a>
+  <ul>
+  <li><a href="#teams">Teams</a></li>
+  <li><a href="#resting">Resting</a></li>
+  <li><a href="#damage">Damage</a></li>
   </ul>
   </li>
   </ul>
   </li>
   </ul>
-  <p><br></p>
+  </li>
+  </ul>
+  <br>
   <h1 id="getting-started">Getting Started</h1>
   <h2 id="how-to-play">How to Play</h2>
-  <p>You can play Kapta at firerubies.github.io/kapta!</p>
-  <p><br></p>
+  <p>You can play Kapta at <a href="http://firerubies.github.io/kapta">firerubies.github.io/kapta</a>!</p>
+  <br>
   <h2 id="about-kapta">About Kapta</h2>
   <p>Kapta is a game where you collect cards. You can use these cards for many things including <a href="#fusion">Fusion</a>, and <a href="#battle">Battle</a>.</p>
-  <p><br></p>
+  <br>
+  <h2 id="report-a-bug">Report a bug</h2>
+  <p>You can report a bug <a href="https://docs.google.com/forms/d/e/1FAIpQLScW9hnfeugVE_6CYP9VBV8JNu4a1AbnFJsxB0hZLEweZCJrlw/viewform?usp=sf_link">here</a>.</p>
+  <br>
   <h2 id="rules">Rules</h2>
   <ol>
-  <li>Don&#39;t mess with my API keys.</li>
-  <li>Don&#39;t cheat.</li>
+  <li>Don't mess with my API keys.</li>
+  <li>Don't cheat.</li>
   <li>Have fun!</li>
   </ol>
-  <p><br></p>
+  <br>
   <h1 id="cards">Cards</h1>
-  <p>Cards are the main mechanic of Kapta.</p>
-  <p><br></p>
+  <p>Cards are the main mechanic of Kapta. You can get more cards by buying them from the shop with <a href="#crowns">crowns</a>.</p>
+  <br>
+  <h2 id="crowns">Crowns</h2>
+  <p>Crowns are the currency of Kapta. You can use crowns to do many things like purchasing more cards!</p>
   <h2 id="card-attributes">Card Attributes</h2>
-  <p>All cards in Kapta have attributes like it&#39;s element, tier, etc.</p>
-  <p><br></p>
+  <p>All cards in Kapta have attributes like it's element, tier, etc.</p>
+  <br>
   <h3 id="elements">Elements</h3>
-  <p>Every card has an element. A card&#39;s element is essential in battle as certain elements are weaker or mrore resistant to other elements.</p>
-  <blockquote>
-  <p>When you get home look up a chart or something about
-  which of the four basic elements are weak or strong
-  to which element then finish / redo the below table
-  or just include the image you found.</p>
-  </blockquote>
+  <p>Every card has an element. A card's element is essential in battle as certain elements are weaker or more resistant to other elements.</p>
   <table>
   <thead>
   <tr>
@@ -263,19 +302,15 @@
   </tr>
   </tbody>
   </table>
-  <p><br></p>
+  <br>
   <h3 id="tiers">Tiers</h3>
   <p>Tiers are used to quantify the power of a card. The higher the tier of a card is the more powerful it is. The max tier a card can be currently is 10.</p>
-  <!-- Ask in a discord server about the below math. It seems wrong. -->
-  <blockquote>
-  <p>Fun fact:
-  It takes 19 million tier 1 cards to make a tier 10 card. Good luck!</p>
-  </blockquote>
+  <br>
   <h2 id="card-uses">Card Uses</h2>
   <p>Below are some of the things you can do with cards.</p>
-  <p><br></p>
+  <br>
   <h3 id="fusion">Fusion</h3>
-  <p><br></p>
+  <br>
   <p>You can fuse cards of the same tier together to make a one card with a higher tier.</p>
   <table>
   <thead>
@@ -327,11 +362,18 @@
   </tr>
   </tbody>
   </table>
-  <p><br></p>
+  <br>
   <h3 id="battle">Battle</h3>
-  <blockquote>
-  <p>Battle isn&#39;t implemented yet but will be in the near future.</p>
-  </blockquote>  
+  <p>You can battle enemy cards to earn rewards!</p>
+  <br>
+  <h4 id="teams">Teams</h4>
+  <p>To battle you must first have <a href="#resting">rested</a> cards on your team. You can currently have up to 3 cards on your team!</p>
+  <br>
+  <h4 id="resting">Resting</h4>
+  <p>Cards need to rest after battling or when first being added to a <a href="#teams">team</a>.</p>
+  <br>
+  <h4 id="damage">Damage</h4>
+  <p>Cards deal damage based on their <a href="#tiers">tier</a> and the element their attacking! For example if a Water card attacks a Fire card the Fire card would receive 25% more damage. You can view the <a href="#elements">Elements</a> section for more information.</p>
 </div>
 
 <br>
@@ -342,8 +384,9 @@
   <br>
 
 <button onclick="toggleTools()" class="edit">Edit</button>
-<button onclick="deleteSelectedCardsButton();" class="tool">Delete</button>
-<button onclick="fuseSelectedCards();" class="tool">Fuse</button>
+<button onclick="deleteSelectedCardsButton();" class="tool deleteCards">Delete</button>
+<button onclick="fuseSelectedCards();" class="tool fuseCards">Fuse</button>
+<button onclick="editTeamButton();" class="tool editTeam">Edit Team</button>
 
 <br>
 

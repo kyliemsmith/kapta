@@ -6,17 +6,21 @@ Welcome to the Kapta wiki!
 - [Getting Started](#getting-started)
   - [How to Play](#how-to-play)
   - [About Kapta](#about-kapta)
+  - [Report a bug](#report-a-bug)
   - [Rules](#rules)
 - [Cards](#cards)
+  - [Crowns](#crowns)
   - [Card Attributes](#card-attributes)
     - [Elements](#elements)
     - [Tiers](#tiers)
   - [Card Uses](#card-uses)
     - [Fusion](#fusion)
     - [Battle](#battle)
+      - [Teams](#teams)
+      - [Resting](#resting)
+      - [Damage](#damage)
 
 <br>
-
 
 # Getting Started
 
@@ -34,6 +38,12 @@ Kapta is a game where you collect cards. You can use these cards for many things
 
 <br>
 
+## Report a bug
+
+You can report a bug [here](https://docs.google.com/forms/d/e/1FAIpQLScW9hnfeugVE_6CYP9VBV8JNu4a1AbnFJsxB0hZLEweZCJrlw/viewform?usp=sf_link).
+
+<br>
+
 ## Rules
 
 1. Don't mess with my API keys.
@@ -44,9 +54,13 @@ Kapta is a game where you collect cards. You can use these cards for many things
 
 # Cards
 
-Cards are the main mechanic of Kapta.
+Cards are the main mechanic of Kapta. You can get more cards by buying them from the shop with [crowns](#crowns).
 
 <br>
+
+## Crowns
+
+Crowns are the currency of Kapta. You can use crowns to do many things like purchasing more cards!
 
 ## Card Attributes
 
@@ -56,12 +70,7 @@ All cards in Kapta have attributes like it's element, tier, etc.
 
 ### Elements
 
-Every card has an element. A card's element is essential in battle as certain elements are weaker or mrore resistant to other elements.
-
->When you get home look up a chart or something about
->which of the four basic elements are weak or strong
->to which element then finish / redo the below table
->or just include the image you found.
+Every card has an element. A card's element is essential in battle as certain elements are weaker or more resistant to other elements.
 
 | Element | Anti-Element |
 | ----------- | ----------- |
@@ -80,11 +89,7 @@ Every card has an element. A card's element is essential in battle as certain el
 
 Tiers are used to quantify the power of a card. The higher the tier of a card is the more powerful it is. The max tier a card can be currently is 10.
 
-
-<!-- Ask in a discord server about the below math. It seems wrong. -->
-
->Fun fact:
-> It takes 19 million tier 1 cards to make a tier 10 card. Good luck!
+<br>
 
 ## Card Uses
 
@@ -115,4 +120,22 @@ You can fuse cards of the same tier together to make a one card with a higher ti
 
 ### Battle
 
->Battle isn't implemented yet but will be in the near future.
+You can battle enemy cards to earn rewards!
+
+<br>
+
+#### Teams
+
+To battle you must first have [rested](#resting) cards on your team. You can currently have up to 3 cards on your team!
+
+<br>
+
+#### Resting
+
+Cards need to rest after battling or when first being added to a [team](#teams).
+
+<br>
+
+#### Damage
+
+Cards deal damage based on their [tier](#tiers) and the element their attacking! For example if a Water card attacks a Fire card the Fire card would receive 25% more damage. You can view the [Elements](#elements) section for more information.

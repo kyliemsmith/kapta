@@ -1,0 +1,56 @@
+.healthBar {
+    display: inline-block;
+    background-color: red;
+  }
+  
+  .healthBar[value]::-webkit-progress-value {
+      background-color: red;
+      transition: width 0.5s;
+  }
+
+  #player.healthbar {
+    position: absolute;
+    left: 0px;
+}
+
+  #enemy.healthbar {
+    position: absolute;
+    right: 0px;
+  }
+
+.battleTiers {
+    color: gold;
+}
+
+.playerTier {
+    position: absolute;
+    left: 0px;
+    top: 126px;
+}
+
+.enemyTier {
+    position: absolute;
+    right: 0px;
+    top: 126px;
+}
+
+.playerElement {
+    position: absolute;
+    left: 160px;
+    top: 126px;
+}
+
+.enemyElement {
+    position: absolute;
+    right: 160px;
+    top: 126px;
+}
+
+.battleOptions {
+    display: flex;
+    justify-content: center;
+}
+
+.battleStats {
+    visibility: hidden;
+}
