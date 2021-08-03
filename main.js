@@ -58,9 +58,7 @@ async function createNewAccount(email, password) {
     try {
         const userAuth = (await firebase.auth().createUserWithEmailAndPassword(email, password)).user;
         var user = {
-            cards : {
-                1 : 1
-              },
+            cards : '[[\"3\",\"1\"]]',
             email : userAuth.email,
             experience : 0,
             level : 1,
@@ -69,10 +67,11 @@ async function createNewAccount(email, password) {
             username : userAuth.uid
           }
         writeUserData(user)
-        setCookie("cards", "[[1, 1]]", 7);
-        setCookie("level", 1);
-        setCookie("experience", 0);
-        setCookie("crowns", 0);
+        setCookie("cards", '[[\"3\",\"1\"]]', 7);
+        setCookie("level", 1, 7);
+        setCookie("experience", 0, 7);
+        setCookie("crowns", 0, 7);
+        setCookie("team", "", 7);
 
     } catch (error) {
         console.log(error.message)
@@ -240,7 +239,7 @@ firebase.auth().onAuthStateChanged(user => {
     document.getElementById("cardsOpen").click();
     if (getCookie("uid") != user.uid) {
         wipeLocalData();
-        loadFromDatabase();
+        loadFromDatabase(true);
         setCookie("uid", user.uid, 7);
     } else {
         if (getCookie("cards") != "" && getCookie("level") != "" && getCookie("experience") != "" && getCookie("crowns") != "") {
@@ -253,15 +252,16 @@ firebase.auth().onAuthStateChanged(user => {
             loadCards("database");
             loadLevels("database");
             loadCrowns("database");
+            loadTeam();
         }
     
     }
 }
 });
 
-async function loadFromDatabase() {
+async function loadFromDatabase(doOverride) {
 
-    if (getCookie("loadedFromDatabaseRecently") == "") {
+    if (getCookie("loadedFromDatabaseRecently") == "" || doOverride) {
         userUid = await firebase.auth().currentUser.uid;
         await loadCards("database");
         await loadLevels("database");
@@ -769,8 +769,11 @@ async function deleteSelectedCardsButton() {
         notify("error", "You can't delete cards while editing your team!");
         return;
     }
-    await deleteSelectedCards();
-    await loadCards();
+
+    if (confirm(`Are you sure you'd like to delete the selected card(s)?`)) {
+        await deleteSelectedCards();
+        await loadCards();
+    }
 }
 
 async function deleteSelectedCards() {
@@ -1216,6 +1219,7 @@ async function wipeLocalData() {
     setCookie("experience", "", 7);
     setCookie("level", "", 7);
     setCookie("crowns", "", 7);
+    setCookie("team", "", 7);
 }
 
 //Crowns
@@ -1770,8 +1774,11 @@ async function updateTiers() {
 }
 
 async function loadTeam() {
-    team = JSON.parse(getCookie("team"));
-    await populateHealMenu();
+    if (getCookie("team") != "") {
+        team = JSON.parse(getCookie("team"));
+    } else {
+        await populateHealMenu();
+    }
 }
 
 async function saveTeam() {
