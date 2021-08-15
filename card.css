@@ -13,6 +13,14 @@ body {
   
 }
 
+.card {
+  transition: all .2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
 .container {
     display: inline;
     max-width: 100%;
