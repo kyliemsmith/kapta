@@ -15,6 +15,8 @@ body {
 
 .card {
   transition: all .2s ease-in-out;
+  /* Uncomment the below line to change the card background gradient */
+  /* background-color: radial-gradient(circle, rgba(7,0,117,1) 0%, rgba(10,10,186,1) 43%, rgba(0,212,255,1) 100%) !important; */
 }
 
 .card:hover {
@@ -147,40 +149,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.3;
+    opacity: 0;
     object-fit: cover;
     /* z-index: 100000000000000; */
     z-index: 1000000000;
     
-  }
-
-  .fSelected {
-    position: absolute;
-    min-height: 100%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -100;
-  }
-
-  .fSelected label {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    /* Ensure the checkbox is centered */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    /* display: block;
-    position: absolute;
-    width: 100;
-    height: 100;
-    object-fit: fill;
-    z-index: 99999999999; */
   }
 
   .fSelector:checked ~ .fSelected {
@@ -198,3 +171,17 @@ body {
     box-shadow: 0 0 11px rgba(255, 0, 221, 0.9);
     z-index: 9999999999999;
   } */
+
+  .cardOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1000000001;
+    pointer-events: none;
+    background-color: red;
+    opacity: 0.3;
+    visibility: hidden;
+  }

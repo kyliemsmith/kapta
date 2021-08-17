@@ -1,3 +1,20 @@
+/*-----------------------------------------------------------
+TODO:
+
+ Maybe use a slider and the transform: scale() css property to allow the user to resize game windows!
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------*/
+
+
 //Authentication
 
 function setCookie(cname, cvalue, exdays) {
@@ -703,6 +720,7 @@ var tierSymbol = "★";
         }
 
         element.remove();
+        highlightSelectedCards();
 
     }
 })(jQuery);
@@ -715,6 +733,7 @@ async function nextPage() {
             await checkCardsInTeam();
             await loadCards();
             await showCardsInTeamOnPage();
+            await highlightSelectedCards();
         } else {
             loadCards();
         }
@@ -732,6 +751,7 @@ async function previousPage() {
             await checkCardsInTeam();
             await loadCards();
             await showCardsInTeamOnPage();
+            await highlightSelectedCards();
         } else {
             loadCards();
         }
@@ -1088,6 +1108,16 @@ async function getRandomCard() {
     var cardIDCap = 1000;
     return (Math.round(Math.random() * cardIDCap)).toString();
 };
+
+async function highlightSelectedCards() {
+    $('input.fSelector').each(function() {
+        if ($(this).is(":checked")) {
+            $(this).parent().siblings(".cardOverlay").css("visibility", "visible");
+        } else {
+            $(this).parent().siblings(".cardOverlay").css("visibility", "hidden");
+        }
+    })
+}
 
 //Change reloadCards to reload the specific page the user has selected once you finish setting up the specific user pages
 // async function reloadCards(reloadType, cardsToReload) {
@@ -1790,10 +1820,12 @@ var editingTeam = false;
 async function editTeamButton() {
     if (editingTeam) {
         $(".editTeam").css("color", "inherit");
-        doneEditingTeam();
+        await doneEditingTeam();
+        await highlightSelectedCards();
     } else if (!editingTeam) {
         $(".editTeam").css("color", "green");
-        editTeam();
+        await editTeam();
+        await highlightSelectedCards();
     }
 }
 
