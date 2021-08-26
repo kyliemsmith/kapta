@@ -17,6 +17,8 @@ TODO:
 
 //Authentication
 
+cookieExpirationDays = 50;
+
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -84,11 +86,11 @@ async function createNewAccount(email, password) {
             username : userAuth.uid
           }
         writeUserData(user)
-        setCookie("cards", '[[\"3\",\"1\"]]', 7);
-        setCookie("level", 1, 7);
-        setCookie("experience", 0, 7);
-        setCookie("crowns", 0, 7);
-        setCookie("team", "", 7);
+        setCookie("cards", '[[\"3\",\"1\"]]', cookieExpirationDays);
+        setCookie("level", 1, cookieExpirationDays);
+        setCookie("experience", 0, cookieExpirationDays);
+        setCookie("crowns", 0, cookieExpirationDays);
+        setCookie("team", "", cookieExpirationDays);
 
     } catch (error) {
         console.log(error.message)
@@ -257,7 +259,7 @@ firebase.auth().onAuthStateChanged(user => {
     if (getCookie("uid") != user.uid) {
         wipeLocalData();
         loadFromDatabase(true);
-        setCookie("uid", user.uid, 7);
+        setCookie("uid", user.uid, cookieExpirationDays);
     } else {
         if (getCookie("cards") != "" && getCookie("level") != "" && getCookie("experience") != "" && getCookie("crowns") != "") {
             loadCards("local");
@@ -511,7 +513,7 @@ async function loadCards(loadFrom) {
             console.log("Entries: ");
             console.log(Object.entries(snap.val()));
             cards = JSON.parse(snap.val());
-            setCookie("cards", snap.val(), 7);
+            setCookie("cards", snap.val(), cookieExpirationDays);
             console.log("Just pushed cards now equals: ");
             console.log(cards);
             
@@ -831,7 +833,7 @@ async function deleteCard(cardID) {
         console.log(`User has card (${cardID}) deleting...`);
         cardsFromCookie.splice(hasCardResult[1], 1);
         console.log(`Setting cards Cookie to: ${cardsFromCookie}`);
-        setCookie("cards", JSON.stringify(cardsFromCookie), 7);
+        setCookie("cards", JSON.stringify(cardsFromCookie), cookieExpirationDays);
     } else if (!hasCardResult[0]){
         notify("error", `You don't have card ${cardID} and thus can't delete it!`);
         console.log(`User doesnt have card (${cardID}) to delete!`);
@@ -912,11 +914,11 @@ async function addCard(cardID, quantity) {
         console.log(`ACI[1] to add: `);
         console.log((parseInt(cookieData[addCardIndex][1]) + parseInt(quantity)).toString());
         cookieData[addCardIndex][1] = ([parseInt(cookieData[addCardIndex][1]) + parseInt(quantity)].toString());
-        setCookie("cards", JSON.stringify(cookieData), 7);
+        setCookie("cards", JSON.stringify(cookieData), cookieExpirationDays);
         
     } else {
         cookieData.push([cardID.toString(), quantity.toString()]);
-        setCookie("cards", JSON.stringify(cookieData), 7);
+        setCookie("cards", JSON.stringify(cookieData), cookieExpirationDays);
     }
 }
 
@@ -1192,8 +1194,8 @@ async function loadLevels(loadFrom) {
             level = parseInt(snap.val()["level"]);
         });
 
-        setCookie("experience", experience, 7);
-        setCookie("level", level, 7);
+        setCookie("experience", experience, cookieExpirationDays);
+        setCookie("level", level, cookieExpirationDays);
 
     } else {
         experience = parseInt(getCookie("experience"));
@@ -1215,14 +1217,14 @@ function addXP(xpToAdd) {
     if (experience >= xpToNextLevel) {
         level += 1;
         experience = 0;
-        setCookie("experience", experience, 7);
-        setCookie("level", level, 7);
+        setCookie("experience", experience, cookieExpirationDays);
+        setCookie("level", level, cookieExpirationDays);
         $(".currentLevel").text(level);
         xpToNextLevel = Math.floor(baseXP * (level ^ XPExponent));
         displayConfetti(5);
     }
 
-    setCookie("experience", experience, 7);
+    setCookie("experience", experience, cookieExpirationDays);
     $('.experience-bar').css('width', (100*(experience/xpToNextLevel)) + "%");
     
 }
@@ -1245,11 +1247,11 @@ async function saveToDatabase() {
 }
 
 async function wipeLocalData() {
-    setCookie("cards", "", 7);
-    setCookie("experience", "", 7);
-    setCookie("level", "", 7);
-    setCookie("crowns", "", 7);
-    setCookie("team", "", 7);
+    setCookie("cards", "", cookieExpirationDays);
+    setCookie("experience", "", cookieExpirationDays);
+    setCookie("level", "", cookieExpirationDays);
+    setCookie("crowns", "", cookieExpirationDays);
+    setCookie("team", "", cookieExpirationDays);
 }
 
 //Crowns
@@ -1264,7 +1266,7 @@ async function loadCrowns(loadFrom) {
         await firebase.database().ref('users/' + userUid).once("value", snap => {
             console.log(snap.val());
             crowns = parseInt(snap.val()["crowns"]);
-            setCookie("crowns", crowns, 7);
+            setCookie("crowns", crowns, cookieExpirationDays);
         });
     } else {
         crowns = parseInt(getCookie("crowns"));
@@ -1275,7 +1277,7 @@ async function loadCrowns(loadFrom) {
 
 function addCrowns(crownsToAdd) {
     crowns += crownsToAdd;
-    setCookie("crowns", crowns, 7);
+    setCookie("crowns", crowns, cookieExpirationDays);
     $(".crowns").text(crownSymbol + crowns.toString());
 }
 
@@ -1285,7 +1287,7 @@ function removeCrowns(crownsToRemove) {
     if ((crowns - crownsToRemove) < 1) {
         if (allowDebt == true) {
             crowns -= crownsToRemove;
-            setCookie("crowns", crowns, 7);
+            setCookie("crowns", crowns, cookieExpirationDays);
             $(".crowns").text(crownSymbol + crowns.toString());
 
         } else {
@@ -1295,7 +1297,7 @@ function removeCrowns(crownsToRemove) {
     }
 
     crowns -= crownsToRemove;
-    setCookie("crowns", crowns, 7);
+    setCookie("crowns", crowns, cookieExpirationDays);
     $(".crowns").text(crownSymbol + crowns.toString());
 }
 
@@ -1812,7 +1814,7 @@ async function loadTeam() {
 }
 
 async function saveTeam() {
-    setCookie("team", JSON.stringify(team), 7);
+    setCookie("team", JSON.stringify(team), cookieExpirationDays);
 }
 
 var editingTeam = false;
