@@ -1,14 +1,14 @@
 /*-----------------------------------------------------------
 TODO:
 
- Maybe use a slider and the transform: scale() css property to allow the user to resize game windows!
 
-
-
-
-
-
-
+Add a sort button that will sort the cards
+array by card tier, element, alphabetically, and by quantity,
+re-save it to cookies,
+and then reload the cards. Remember to have it
+re-sort the cards when loadCards() is called
+or it'll get messed up when the sorting
+property gets changed
 
 
 
@@ -861,6 +861,7 @@ async function deleteCard(cardID) {
 
 // }
 
+
 async function getTierOfCard(cardID) {
 
     var toPickFrom = [];
@@ -962,6 +963,13 @@ function filterCardsForFusionByTier(cards, tier) {
     }
     return toReturn;
 }
+
+// async function sortCards() {
+//     //&*
+//     for (var i = 0; i < cards.length; i++) {
+
+//     }
+// }
 
 var minXPReward = 1;
 var maxXPReward = 10;
@@ -1254,6 +1262,31 @@ async function wipeLocalData() {
     setCookie("team", "", cookieExpirationDays);
 }
 
+async function wipeDatabaseData() {
+    await firebase.database().ref('users/' + userUid + '/cards').set('[[\"3\",\"1\"]]');
+    await firebase.database().ref('users/' + userUid + '/experience').set(0);
+    await firebase.database().ref('users/' + userUid + '/level').set(1);
+    await firebase.database().ref('users/' + userUid + '/crowns').set(0);
+}
+
+async function wipeAllData(skipConfirmation) {
+    if (!skipConfirmation) {
+        if (confirm("Are you sure you'd like to wipe all of your data?")) {
+            if (confirm("Are you absolutely sure you'd like to wipe all of your data?")) {
+                if (confirm("This is your laste warning, are you sure you'd like to wipe all of your data?")) {
+                    setCookie("cards", `[[\"3\",\"1\"]]`, cookieExpirationDays);
+                    setCookie("experience", "0", cookieExpirationDays);
+                    setCookie("level", "1", cookieExpirationDays);
+                    setCookie("crowns", "0", cookieExpirationDays);
+                    setCookie("team", "", cookieExpirationDays);
+                    await wipeDatabaseData();
+                    signOut();
+                }
+            }
+        }
+    }
+}
+
 //Crowns
 
 var crowns;
@@ -1281,7 +1314,7 @@ function addCrowns(crownsToAdd) {
     $(".crowns").text(crownSymbol + crowns.toString());
 }
 
-function removeCrowns(crownsToRemove) {
+async function removeCrowns(crownsToRemove) {
     allowDebt = true;
 
     if ((crowns - crownsToRemove) < 1) {
@@ -1301,12 +1334,12 @@ function removeCrowns(crownsToRemove) {
     $(".crowns").text(crownSymbol + crowns.toString());
 }
 
-async function buyRandomCard() {
+async function buyRandomCard(numberOfCardsToBuy) {
     randomCardCost = 100;
     confirmPurchase = true;
-
+if (numberOfCardsToBuy <= 1)  {
     if (crowns >= randomCardCost) {
-        if (confirm(`Are you sure you'd like to buy a random card for ${randomCardCost} Crowns?`)) {
+        if (!confirm || confirm(`Are you sure you'd like to buy a random card for ${randomCardCost} Crowns?`)) {
             getRandomCardResult = await getRandomCard();
             await removeCrowns(randomCardCost);
     
@@ -1318,7 +1351,19 @@ async function buyRandomCard() {
         }
     } else {
         notify("error", `You need ${randomCardCost - crowns} more crowns!`);
+        return false;
     }
+} else if (crowns >= randomCardCost*numberOfCardsToBuy && confirm(`Are you sure you'd like to buy ${numberOfCardsToBuy} random card(s) for ${randomCardCost*numberOfCardsToBuy} Crowns?`)) {
+    for(var cardsBought = 0; cardsBought < numberOfCardsToBuy; cardsBought++) {
+        getRandomCardResult = await getRandomCard();
+        await removeCrowns(randomCardCost);
+    
+        await addCard(getRandomCardResult, 1);
+
+        notify("success", `You bought card ${getRandomCardResult}`);
+    }
+    await loadCards();
+}
 }
 
 document.getElementById("defaultOpen").click();
@@ -1571,6 +1616,13 @@ function reloadP5JS() {
 function hideGame() {
     $(".gameScript").remove();
     $(".p5Canvas").remove();
+}
+
+function resizeGame(resizeValue) {
+    resizeValue = resizeValue/100;
+    console.log(`Resize Value: ${resizeValue}`);
+    $(".p5Canvas").css("transform", `scale(${resizeValue})`);
+
 }
 
 //Navigation Bar

@@ -67,7 +67,7 @@
     <li><a class="tablinks" onclick="openTab(event, 'Games')">Games</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Battle')">Battle</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Shop')">Shop</a></li>
-    <li><a class="tablinks" onclick="openTab(event, 'Save/Load')">Save/Load</a></li>
+    <li><a class="tablinks" onclick="openTab(event, 'Settings')">Settings</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Music')">Music</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'News')">News</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Help')">Help</a></li>
@@ -145,12 +145,15 @@
   <p>This marks the first official release of Kapta!</p>
 </div>
 
-<div id="Save/Load" class="tabcontent">
+<div id="Settings" class="tabcontent">
   <br>
   <br>
   <br>
 <button onclick="saveToDatabase();">Save To Database</button>
 <button onclick="loadFromDatabase();">Load From Database</button>
+<br>
+<br>
+<button onclick="wipeAllData();">Wipe Data</button>
 </div>
 
 <div id="Battle" class="tabcontent">
@@ -191,6 +194,7 @@
     <option value="pong">Pong</option>
     <option value="car">Car</option>
   </select>
+  <input id="gameResizer" type="range" min="25" max="100" step="1" value="100" onchange="resizeGame(this.value)">
   <div class="game">
   </div>
 </div>
@@ -199,7 +203,9 @@
   <br>
   <br>
   <br>
-  <button onclick="buyRandomCard();">Buy Random Card</button>
+  <button onclick="buyRandomCard(1);">Buy Random Card</button>
+  <button onclick="buyRandomCard(5);">Buy Random Card (5x)</button>
+  <button onclick="buyRandomCard(10);">Buy Random Card (10x)</button>
 </div>
 
 <div id="Help" class="tabcontent">
