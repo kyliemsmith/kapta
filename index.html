@@ -68,7 +68,6 @@
     <li><a class="tablinks" onclick="openTab(event, 'Battle')">Battle</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Shop')">Shop</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Settings')">Settings</a></li>
-    <li><a class="tablinks" onclick="openTab(event, 'Music')">Music</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'News')">News</a></li>
     <li><a class="tablinks" onclick="openTab(event, 'Help')">Help</a></li>
   </ul>
@@ -125,20 +124,6 @@
   <span class="experience-bar" style="width: 0%"></span>
 </div>
 
-<div id="Music" class="tabcontent">
-  <br>
-  <br>
-  <br>
-<button onclick="musicButton();">Play/Pause</button>
-<button onclick="musicLoopButton();">Loop?</button>
-<br>
-<br>
-<h3>Song Select: </h3>
-<select class="musicList" selected="None" onchange="musicDropdownMenuChanged(getChangedItemFromDropdownMenu(this))">
-  <option value="None">None</option>
-</select>
-</div>
-
 <div id="News" class="tabcontent">
   <br>
   <h2>Release 1.0 - 8/2/2021</h2>
@@ -148,7 +133,19 @@
 <div id="Settings" class="tabcontent">
   <br>
   <br>
+  <h2>Music:</h2>
+  <button onclick="musicButton();">Play/Pause</button>
+  <button onclick="musicLoopButton();">Loop?</button>
   <br>
+  <br>
+  <h3>Song Select: </h3>
+  <select class="musicList" selected="None" onchange="musicDropdownMenuChanged(getChangedItemFromDropdownMenu(this))">
+    <option value="None">None</option>
+  </select>
+  <br>
+  <p>Music by <a href="https://www.soundimage.org">Eric Matyas</a></p>
+  <br>
+  <h2>Data:</h2>
 <button onclick="saveToDatabase();">Save To Database</button>
 <button onclick="loadFromDatabase();">Load From Database</button>
 <br>
