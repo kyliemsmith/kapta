@@ -1273,7 +1273,7 @@ async function wipeAllData(skipConfirmation) {
     if (!skipConfirmation) {
         if (confirm("Are you sure you'd like to wipe all of your data?")) {
             if (confirm("Are you absolutely sure you'd like to wipe all of your data?")) {
-                if (confirm("This is your laste warning, are you sure you'd like to wipe all of your data?")) {
+                if (confirm("This is your last warning, are you sure you'd like to wipe all of your data?")) {
                     setCookie("cards", `[[\"3\",\"1\"]]`, cookieExpirationDays);
                     setCookie("experience", "0", cookieExpirationDays);
                     setCookie("level", "1", cookieExpirationDays);
@@ -1614,6 +1614,8 @@ function reloadP5JS() {
 }
 
 function hideGame() {
+    new p5();
+    remove();
     $(".gameScript").remove();
     $(".p5Canvas").remove();
 }
