@@ -232,6 +232,7 @@ var mousePressed = function() {
       distance = 0;
       coins = [];
       walls = [];
+      givenRewards = false;
     }
   }
 };
