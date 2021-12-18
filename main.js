@@ -1615,7 +1615,7 @@ function reloadP5JS() {
 
 function hideGame() {
     new p5();
-    remove();
+    remove(p5);
     $(".gameScript").remove();
     $(".p5Canvas").remove();
 }
